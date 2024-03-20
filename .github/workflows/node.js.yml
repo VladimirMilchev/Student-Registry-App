@@ -8,26 +8,41 @@ on:
   workflow_dispatch: 
 
 jobs:
-  build-test:
-    runs-on: ubuntu-latest
-
+  test-security:
+    runs-on: ubuntu-latest 
     steps:
-    - name: Chekout repo
+    - name: Checkout the repository
       uses: actions/checkout@v3
-    - name: Use Node.js 20.x
+    - name: Use Node.js 20
       uses: actions/setup-node@v3
       with:
         node-version: 20.x
         cache: 'npm'
     - name: Install dependencies
       run: npm install
-    - name: Run tests
+    - name: Run integration tests
+      run: npm run test-npm-security
+  
+  test-integration:
+    needs: test-security
+    runs-on: ubuntu-latest 
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v3
+    - name: Use Node.js 20
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm install
+    - name: Run integration tests
       run: npm test
 
   deploy:
-    runs-on: ubuntu-lastest
-    needs: build-test
-
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: test-integration
     steps:
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8
