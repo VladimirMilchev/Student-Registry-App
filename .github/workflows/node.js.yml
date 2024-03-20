@@ -27,7 +27,7 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: [ test ]
+    needs: build-test
     runs-on: ubuntu-lastest
 
     steps:
