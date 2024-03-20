@@ -30,7 +30,6 @@ jobs:
     name: Deploy
     needs: build-test
 
-
     steps:
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8
