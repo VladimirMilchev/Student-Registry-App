@@ -26,6 +26,8 @@ jobs:
 
   deploy:
     runs-on: ubuntu-lastest
+    needs: build-test
+
     steps:
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8
